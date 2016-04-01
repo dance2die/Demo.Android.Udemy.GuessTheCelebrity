@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     result += line;
                 }
 
-                Log.i("Result", result);
+//                Log.i("Result", result);
                 return result;
 
             } catch (Exception e) {
@@ -70,7 +72,27 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             result = task.execute("http://www.posh24.com/celebrities").get();
-            Log.i("Contents of URL", result);
+            String[] splitResult = result.split("<div class=\"sidebarContainer\">");
+
+            Pattern p = Pattern.compile("src=\"(.*?)\"");
+            Matcher m = p.matcher(splitResult[0]);
+
+            while (m.find()){
+//                System.out.println(m.group(1));
+                Log.i("src=", m.group(1));
+            }
+
+            p = Pattern.compile("alt=\"(.*?)\"");
+            m = p.matcher(splitResult[0]);
+
+            while (m.find()){
+//                System.out.println(m.group(1));
+                Log.i("alt=", m.group(1));
+            }
+
+
+
+//            Log.i("Contents of URL", result);
         } catch (Exception e) {
             e.printStackTrace();
         }
